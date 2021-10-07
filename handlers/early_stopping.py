@@ -1,8 +1,7 @@
 """"
-Module: early_stopping.py
+early_stopping.py
 Author: Saurabh Biswas
 Institution: University of Osnabrueck
-Created on: 15.03.2021
 
 Early stops the training if validation loss doesn't improve after a given patience.
 Ref: "Early Stopping -- but when?" by Lutz Prechelt. https://page.mi.fu-berlin.de/prechelt/Biblio/stop_tricks1997.pdf
