@@ -1,12 +1,11 @@
 """
-Module: ChimpModel.py
+ChimpModel.py
 Author: Saurabh Biswas
 Institution: University of Osnabrueck
-Created on: 24.02.2021
 
-Defines the network for classifying chimpanzee vocalisation samples
+Defines the NN model for classifying chimpanzee vocalisation samples
 
-Ref: Oikarinen, T., Srinivasan, K. ,Meisner, O., & et al. (2019) Deep convolutional network for animal sound
+Ref: Oikarinen, T., Srinivasan, K. ,Meisner, O., et al. (2019) Deep convolutional network for animal sound
 classification and source attribution using dual audio recordings. The Journal of the Acoustical Society of America
 145, 654. doi: https://doi.org/10.1121/1.5087827
 
@@ -15,13 +14,15 @@ classification and source attribution using dual audio recordings. The Journal o
 import torch.nn as nn
 
 class ChimpCallClassifier(nn.Module):
-    def __init__(self, num_labels=4, spectrogram_shape=(257, 254)):
+    def __init__(self, num_labels=4, spectrogram_shape=(257, 254),dropout=0.5):
         """
         Args:
             num_labels (int): No. of labels to be predicted.
                               Default = 4
             spectrogram_shape (tuple of int): Dimensions of input spectrogram.
                                               Default = (257,254)
+            dropout : dropout ratio
+                      Default = 0.5
 
         """
         super().__init__()
@@ -37,7 +38,6 @@ class ChimpCallClassifier(nn.Module):
                 stride=1,
                 padding=2
             ),
-            nn.BatchNorm2d(16),
             nn.ReLU(inplace=True),
             nn.Conv2d(
                 in_channels=16,
@@ -46,7 +46,6 @@ class ChimpCallClassifier(nn.Module):
                 stride=1,
                 padding=2
             ),
-            nn.BatchNorm2d(16),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(
                 kernel_size=2,
@@ -60,7 +59,6 @@ class ChimpCallClassifier(nn.Module):
                 stride=1,
                 padding=2
             ),
-            nn.BatchNorm2d(32),
             nn.ReLU(inplace=True),
             nn.Conv2d(
                 in_channels=32,
@@ -69,7 +67,6 @@ class ChimpCallClassifier(nn.Module):
                 stride=1,
                 padding=2
             ),
-            nn.BatchNorm2d(32),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(
                 kernel_size=2,
@@ -84,7 +81,6 @@ class ChimpCallClassifier(nn.Module):
                 stride=1,
                 padding=1
             ),
-            nn.BatchNorm2d(64),
             nn.ReLU(inplace=True),
             nn.Conv2d(
                 in_channels=64,
@@ -93,7 +89,6 @@ class ChimpCallClassifier(nn.Module):
                 stride=1,
                 padding=1
             ),
-            nn.BatchNorm2d(64),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(
                 kernel_size=2,
@@ -108,7 +103,6 @@ class ChimpCallClassifier(nn.Module):
                 stride=1,
                 padding=2
             ),
-            nn.BatchNorm2d(64),
             nn.ReLU(inplace=True),
             nn.Conv2d(
                 in_channels=64,
@@ -117,7 +111,6 @@ class ChimpCallClassifier(nn.Module):
                 stride=1,
                 padding=2
             ),
-            nn.BatchNorm2d(64),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(
                 kernel_size=2,
@@ -130,9 +123,8 @@ class ChimpCallClassifier(nn.Module):
                 out_features=1024,
                 bias=False
             ),
-            nn.BatchNorm1d(1024),
             nn.ReLU(inplace=True),
-            nn.Dropout(p=0.5),
+            nn.Dropout(p=dropout),
             nn.Linear(
                 in_features=1024,
                 out_features=num_labels,
