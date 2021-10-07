@@ -1,10 +1,9 @@
 """
-Module: ChimpModel.py
+AudioSpectDataset.py
 Author: Saurabh Biswas
 Institution: University of Osnabrueck
-Created on: 20.02.2021
 
-handles input data to the neural network
+Handles input data to the neural network
 
 """
 from torch.utils import data
@@ -22,7 +21,7 @@ class AudioSpectDataset(data.Dataset):
     3. Reads the spectrogram from disk, applies transforms if any and returns a dict with the spectrogram and label
     """
 
-    def __init__(self, spectrograms, labels, transforms=None):  # calling program must check len of spect and label lists are same
+    def __init__(self, spectrograms, labels, transforms=None):  # if directly created then ensure same len for spect and label lists
         self.spectrograms = spectrograms
         self.labels = labels
         self.transforms = transforms
@@ -43,13 +42,18 @@ class AudioSpectDataset(data.Dataset):
     def __len__(self):
         return self.length
 
-    def get_datasets(inputfilelocation, label_dict=None, train_ratio=0.90, transforms=None):
-        data = pd.read_csv(inputfilelocation)
-        data['label'] = data.label.map(label_dict).astype(int)
-        file_locations = data.iloc[:, 0].tolist()
-        labels = data.iloc[:, 1].tolist()
-        train_spects, test_spects, train_labels, test_labels = \
-            train_test_split(file_locations, labels, train_size=train_ratio, random_state=3, shuffle=True)
+    def get_all_labels(self):
+        return self.labels
 
-        return AudioSpectDataset(train_spects, train_labels, transforms), \
-               AudioSpectDataset(test_spects, test_labels, transforms)
+    def get_datasets(inputfile, label_dict=None, train_ratio=0.80, transforms=None):
+        data = pd.read_csv(inputfile)
+        train_spects, test_spects, train_labels, test_labels = \
+            train_test_split(data['spectrogram'], data['label'],
+                             train_size=train_ratio, random_state=3, shuffle=True, stratify=data['label'])
+        print("****Training set****\n",train_labels.value_counts())
+        print("****Validation set****\n",test_labels.value_counts())
+        train_labels = train_labels.map(label_dict).astype(int)
+        test_labels = test_labels.map(label_dict).astype(int)
+
+        return AudioSpectDataset(train_spects.to_list(), train_labels.to_list(), transforms), \
+               AudioSpectDataset(test_spects.to_list(), test_labels.to_list(), transforms)
