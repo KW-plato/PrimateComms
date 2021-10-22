@@ -283,7 +283,12 @@ def train_model(training_data, output_dir, params):
     Final Model: the best performing model is always saved at the location 'best_model_file' because of the Early Stop code
     """
     classifier.load_state_dict(torch.load(best_model_file))
-    torch.save(classifier.state_dict(), trained_model)
+    torch.save(
+        {'model': classifier.state_dict(),
+         'labels': {idx: label for label, idx in params["label_dict"].items()},
+         'spectrogram_shape': params["spectrogram_shape"],
+         'dropout': params["dropout"]
+         }, trained_model)
     pd.DataFrame(
         metrics_list,
         columns=["epoch","train_loss","train_acc","eval_loss","accuracy","precision","recall","f1","cfm"]
