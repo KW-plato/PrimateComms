@@ -14,19 +14,20 @@ Currently call-type labels handled are "ab","pg","ph","ng","fg","tb","sm","gr" a
 
 2. Inventorise the audio samples.
 
-  Run: explorer.py -i <folder-with-audio-samples> -o <output-folder>
+  Run: explorer.py -i folder-with-audio-samples -o output-folder
   
-  The script saves the list of audio samples with one call label in the file output-folder/selected_audio_files.csv
+  The script saves the list of audio samples with one call label in the file: output-folder/selected_audio_files.csv
   The list of compound calls are found in the file output-folder/compoundcall_audio_files.csv
 
   Note: The in our tests the classifier coundnt deal with compound calls as good as single calls. 
-  Besides, in Chimpanzees the cmpound calls can be produced by rather flexible permutations of the single call types. So no effort was made to improve performance  for compound call classification.
+  Besides, in Chimpanzees the cmpound calls can be produced by rather flexible permutations of the single call types. 
+  So no effort was made to improve performance  for compound call classification.
 
-3. Create Spectrograms of 500ms clips extracted from the audio samples.
+3. Create spectrograms of 500ms clips extracted from the audio samples.
   
   Run: audio_to_specgram.py output-folder/selected_audio_files.csv -o data-folder/SPECGRAM
   
-  Script saves the list of the spectrograms in the provided output folder in a file named SPECGRAM_list.csv i.e. in data-folder/SPECGRAM_list.csv in the example above.
+  Script saves the list of the spectrograms in the provided output folder in a file named SPECGRAM_list.csv i.e. in data-folder/SPECGRAM_list.csv as the example above.
 
 4. Train the classifier.
   
