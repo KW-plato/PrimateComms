@@ -52,7 +52,7 @@ if __name__ == "__main__":
 
     input_dir, out_dir =  parse_cli()
 
-    call_categories = ["ab","pg","ph","ng","fg","tb","sm","gr"]
+    call_categories = ["ab","pg","ph","ng","fg","tb","sm","gr","noise"]
     row_list = []
 
     for dirName, subdirName, fileNames in os.walk(input_dir): # get the files in the directory, subdirectory
