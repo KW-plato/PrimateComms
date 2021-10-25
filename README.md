@@ -1,5 +1,6 @@
 # PrimateComms
-Overview: Supervised learning approach to classify chimpanzee call types from audio samples recorded in the wild
+Overview: Supervised learning approach to classify chimpanzee call types from audio samples recorded in the wild.
+
 The classifider is adapted from the model in the paper Oikarinen, T., Srinivasan, K. ,Meisner, O., et al. (2019) Deep convolutional network for animal sound
 classification and source attribution using dual audio recordings. The Journal of the Acoustical Society of America
 145, 654. doi: https://doi.org/10.1121/1.5087827.
@@ -26,7 +27,7 @@ Script saves the list of the spectrograms in the provided output folder in a fil
 Run: train_spectrogram.py data-folder/SPECGRAM_list.csv -o output-folder.
 The trained model and the metrics are found in the folder output-folder
 
-The notebook "predictor" can be used to perform classification onunseen audio-samples.
+The notebook "predictor" can be used to perform classification on unseen audio-samples.
 
 Enjoy!
 
